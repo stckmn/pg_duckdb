@@ -59,7 +59,14 @@ FROM base AS output
 COPY --from=builder /out /
 
 # # stuff
-RUN echo "shared_preload_libraries = 'pg_duckdb'" >> /var/lib/postgresql/data/postgresql.conf.sample
+COPY custom-postgresql.conf /etc/postgresql/conf.d/custom-postgresql.conf
+
+# Ensure file permissions are correct
+RUN chown postgres:postgres /etc/postgresql/conf.d/custom-postgresql.conf && \
+chmod 644 /etc/postgresql/conf.d/custom-postgresql.conf
+
+# Append include directive to postgresql.conf
+RUN echo "include_dir='/etc/postgresql/conf.d/custom-postgresql.conf'" >> /usr/share/postgresql/postgresql.conf.sample
 
 # # Copy the init script to the entrypoint directory
 COPY init-user-db.sh /docker-entrypoint-initdb.d/init-user-db.sh
