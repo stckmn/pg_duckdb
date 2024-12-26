@@ -33,7 +33,7 @@ services:
   #   extra_hosts:
   #     - "host.docker.internal:host-gateway"
   pgduckdb:
-    image: pgduckdb/pgduckdb:17-main
+    image: pgduckdb/pgduckdb:17-v0.1.0
     ports:
       - "${POSTGRES_PORT:-5439}:5432"
     environment:

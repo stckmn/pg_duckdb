@@ -59,14 +59,14 @@ FROM base AS output
 COPY --from=builder /out /
 
 # # stuff
-COPY custom-postgresql.conf /etc/postgresql/conf.d/custom-postgresql.conf
+COPY custom-postgresql.conf /usr/share/postgresql/custom-postgresql.conf
 
 # Ensure file permissions are correct
-RUN chown postgres:postgres /etc/postgresql/conf.d/custom-postgresql.conf && \
-chmod 644 /etc/postgresql/conf.d/custom-postgresql.conf
+RUN chown postgres:postgres /usr/share/postgresql/custom-postgresql.conf && \
+chmod 644 /usr/share/postgresql/custom-postgresql.conf
 
 # Append include directive to postgresql.conf
-RUN echo "include_dir='/etc/postgresql/conf.d/custom-postgresql.conf'" >> /usr/share/postgresql/postgresql.conf.sample
+RUN echo "include='/usr/share/postgresql/custom-postgresql.conf'" >> /usr/share/postgresql/postgresql.conf.sample
 
 # # Copy the init script to the entrypoint directory
 COPY init-user-db.sh /docker-entrypoint-initdb.d/init-user-db.sh
